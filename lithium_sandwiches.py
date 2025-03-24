@@ -1440,14 +1440,3 @@ if __name__ == "__main__":
     )
         complexes.MakeLithiumSandwich(output_file_name="combined_sandwiches.mol2", metal="Li", oxidation_state=1)
 
-        complexes = ProcessCompounds(
-            read_from_location="C:/Users/cm21sb/OneDrive - University of Leeds/Year 4/Sophie Blanch/code/tetracyclic_new/sandwiches/",
-            save_to_location="C:/Users/cm21sb/OneDrive - University of Leeds/Year 4/Sophie Blanch/code/tetracyclic_new/sandwiches/",
-            mol2_file="combined_sandwiches.mol2"
-    )
-        complexes.MakeGFN2xTBWithORCA6InputFiles(
-            output_dir_name = "xTBInputFilesTest",
-            multiplicity = 1,
-            Freq=False,
-    )
-
