@@ -1,8 +1,7 @@
 # Must use the ccdc miniconda python 3.7.12 environment
-# from time import perf_counter
+# Functions written by Sam Mace, thank you!
 
-# start = perf_counter()
-
+# Necessary imports
 from ccdc import io
 from ccdc.molecule import Molecule, Bond, Atom
 from ccdc.descriptors import MolecularDescriptors
@@ -812,201 +811,6 @@ class ProcessCompounds:
                 f.write(string + "\n")
             f.close()
 
-    # def MakeGaussian16InputFiles(
-    #     self,
-    #     multiplicity,
-    #     method,
-    #     basis_set,
-    #     output_dir_name,
-    #     keyword,
-    #     CPU_num,
-    #     RAM_num_per_CPU,
-    #     disk_space,
-    #     nobackup_dir="$TMPDIR",
-    #     notes="coordinates",
-    #     end_of_input_string="",
-    #     time="48:00:00",
-    #     gen_basis_set_dict=None,
-    #     gen_metal_centre=None,
-    # ):
-    #     try:
-    #         os.mkdir(self.save_to_location + output_dir_name)
-    #     except FileExistsError:
-    #         pass
-    #     bash_string = "#! /bin/bash\n"
-    #     num_unpaired_electrons = multiplicity - 1
-    #     odd_or_even = num_unpaired_electrons % 2
-    #     could_not_submit_string = ""
-    #     for molecule in self.molecules:
-    #         end_of_input_string_gen = ""
-    #         # Check number of electrons and multiplicity make sense
-    #         if molecule.identifier == "Molecule Name":
-    #             molecule.identifier = self.mol2_file.split(".")[0]
-    #         bash_string = bash_string + "qsub " + molecule.identifier + "-ARCInput.sh\n"
-    #         electron_count = 0
-    #         for atom in molecule.atoms:
-    #             electron_count = electron_count + (
-    #                 atom.atomic_number - atom.formal_charge
-    #             )
-    #         if basis_set == "gen":
-    #             for atom in molecule.atoms:
-    #                 if atom.atomic_symbol == gen_metal_centre:
-    #                     matom = atom
-    #                     break
-    #             atomidx_basissets = []
-    #             for atom in molecule.atoms:
-    #                 try:
-    #                     shortest_path_bonds_len = len(
-    #                         molecule.shortest_path_bonds(matom, atom)
-    #                     )
-    #                 except TypeError:
-    #                     shortest_path_bonds_len = 99
-    #                 for i in gen_basis_set_dict:
-    #                     if shortest_path_bonds_len in gen_basis_set_dict[i]:
-    #                         atomidx_basissets.append([atom.index + 1, i])
-    #                         break
-    #             specification_string = ""
-    #             for basisset in gen_basis_set_dict:
-    #                 for atomidx_basisset in atomidx_basissets:
-    #                     if atomidx_basisset[1] == basisset:
-    #                         specification_string = (
-    #                             specification_string + str(atomidx_basisset[0]) + " "
-    #                         )
-    #                 specification_string = (
-    #                     specification_string + "0\n" + basisset + "\n****\n"
-    #                 )
-    #             end_of_input_string_gen = specification_string
-
-    #         if electron_count % 2 == odd_or_even:
-    #             with open(
-    #                 self.save_to_location
-    #                 + output_dir_name
-    #                 + "/"
-    #                 + molecule.identifier
-    #                 + "-GaussianInput.inp",
-    #                 "w",
-    #             ) as gaussian_input_file:
-    #                 if basis_set == "":
-    #                     gaussian_input_string = (
-    #                         "%nprocshared="
-    #                         + str(CPU_num)
-    #                         + "\n"
-    #                         + "%mem="
-    #                         + str(int(CPU_num * RAM_num_per_CPU))
-    #                         + "GB\n"
-    #                         + f"%chk="
-    #                         + molecule.identifier
-    #                         + ".chk\n"
-    #                         + "#n "
-    #                         + method
-    #                         + " "
-    #                         + keyword
-    #                         + "\n\n"
-    #                         + notes
-    #                         + "\n\n"
-    #                         + str(molecule.formal_charge)
-    #                         + " "
-    #                         + str(multiplicity)
-    #                         + "\n"
-    #                     )
-    #                 else:
-    #                     gaussian_input_string = (
-    #                         "%nprocshared="
-    #                         + str(CPU_num)
-    #                         + "\n"
-    #                         + "%mem="
-    #                         + str(CPU_num * RAM_num_per_CPU)
-    #                         + "gb\n"
-    #                         + f"%chk="
-    #                         + molecule.identifier
-    #                         + ".chk\n"
-    #                         + "#n "
-    #                         + method
-    #                         + "/"
-    #                         + basis_set
-    #                         + " "
-    #                         + keyword
-    #                         + "\n\n"
-    #                         + notes
-    #                         + "\n\n"
-    #                         + str(molecule.formal_charge)
-    #                         + " "
-    #                         + str(multiplicity)
-    #                         + "\n"
-    #                     )
-    #                 xyz = ""
-    #                 for atom in molecule.atoms:
-    #                     xyz = (
-    #                         xyz
-    #                         + atom.atomic_symbol
-    #                         + " "
-    #                         + str(np.array(atom.coordinates)[0])
-    #                         + " "
-    #                         + str(np.array(atom.coordinates)[1])
-    #                         + " "
-    #                         + str(np.array(atom.coordinates)[2])
-    #                         + "\n"
-    #                     )
-    #                 gaussian_input_string = (
-    #                     gaussian_input_string
-    #                     + xyz
-    #                     + "\n"
-    #                     + end_of_input_string
-    #                     + end_of_input_string_gen
-    #                     + "\n\n\n\n"
-    #                 )
-    #                 gaussian_input_file.write(gaussian_input_string)
-    #                 gaussian_input_file.close()
-    #             with open(
-    #                 self.save_to_location
-    #                 + output_dir_name
-    #                 + "/"
-    #                 + molecule.identifier
-    #                 + "-ARCInput.sh",
-    #                 "w",
-    #             ) as arc_input:
-    #                 arc_input_string = (
-    #                     "#!/bin/bash\n#$ -cwd -V\n#$ -l h_vmem="
-    #                     + str(RAM_num_per_CPU)
-    #                     + "G\n"
-    #                     + "#$ -l h_rt="
-    #                     + time
-    #                     + "\n"
-    #                     + "#$ -l disk="
-    #                     + str(disk_space)
-    #                     + "G\n"
-    #                     + "#$ -pe smp "
-    #                     + str(CPU_num)
-    #                     + "\n#$ -m be\nmodule add test gaussian/G16.C02\nexport GAUSS_SCRDIR="
-    #                     + nobackup_dir
-    #                     + "\ng16 "
-    #                     + molecule.identifier
-    #                     + "-GaussianInput.inp\n"
-    #                 )
-    #                 if nobackup_dir == "$TMPDIR":
-    #                     arc_input_string = arc_input_string + "rm ${GAUSS_SCRDIR}/*\n"
-
-    #                 arc_input_string = (
-    #                     arc_input_string + "rm " + molecule.identifier + ".chk\n"
-    #                 )
-    #                 arc_input.write(arc_input_string)
-    #                 arc_input.close()
-    #         else:
-    #             could_not_submit_string = (
-    #                 could_not_submit_string + molecule.identifier + "\n"
-    #             )
-    #     with open(
-    #         self.save_to_location + output_dir_name + "/qsub_input_script.sh", "w"
-    #     ) as f:
-    #         f.write(bash_string)
-    #         f.close()
-    #     with open(
-    #         self.save_to_location + output_dir_name + "/incorrect_electron_counts.csv",
-    #         "w",
-    #     ) as f:
-    #         f.write(could_not_submit_string)
-    #         f.close()
-
     def MakeGFN2xTBWithORCA6InputFiles(
             self,
             output_dir_name,
@@ -1606,15 +1410,12 @@ except FileNotFoundError:
                     theta=theta,
                 )
             # Minimise Nam z values as much as possible
-            # start = perf_counter()
             res = minimize(
                 fun=self.RotateNam,
                 args=molecule,
                 method="nelder-mead",
                 x0=[0, 0],
             )
-            # end = perf_counter()
-            # print(str(round(end - start, 5)) + " seconds to execute")
             print(res.success)
             # Copy molecule and make a sandwich
             molecule2 = molecule.copy()
@@ -1622,27 +1423,27 @@ except FileNotFoundError:
             molecule2 = self.TranslateMolecule(molecule=molecule2, trans_vector=np.array([0, 0, 3]))
             m_id0 = molecule.add_molecule(molecule2)
             m_id1 = molecule.add_atom(metal_atom)
-            #m_id2 = molecule.add_atom(metal_atom_p3)
-            #m_id3 = molecule.add_atom(metal_atom_m3)
             mol2_string = mol2_string + molecule.to_string("mol2")
-            #break
+
         with open(self.save_to_location + output_file_name + ".mol2", "w") as f:
             f.write(mol2_string)
             f.close()
 
 if __name__ == "__main__": 
 
-    #     complexes = ProcessCompounds(
-    #         read_from_location="C:/Users/cm21sb/OneDrive - University of Leeds/Year 4/Sophie Blanch/code/tetracyclic_new/sandwiches/",
-    #         save_to_location="C:/Users/cm21sb/OneDrive - University of Leeds/Year 4/Sophie Blanch/code/tetracyclic_new/sandwiches/",
-    #         mol2_file = 'combined_ligands.mol2'
-    # )
-        # complexes.MakeLithiumSandwich(output_file_name="combined_sandwiches", metal="Li", oxidation_state=1)
+        # Read combined ligands mol2 file, make the lithium sandwiches and write them to another mol2 file,
+        # then produce individual xtb input files
+        complexes = ProcessCompounds(
+            read_from_location="C:/Users/cm21sb/OneDrive - University of Leeds/Year 4/Sophie Blanch/code/tetracyclic_new/sandwiches/",
+            save_to_location="C:/Users/cm21sb/OneDrive - University of Leeds/Year 4/Sophie Blanch/code/tetracyclic_new/sandwiches/",
+            mol2_file = 'combined_ligands.mol2'
+    )
+        complexes.MakeLithiumSandwich(output_file_name="combined_sandwiches.mol2", metal="Li", oxidation_state=1)
 
         complexes = ProcessCompounds(
             read_from_location="C:/Users/cm21sb/OneDrive - University of Leeds/Year 4/Sophie Blanch/code/tetracyclic_new/sandwiches/",
             save_to_location="C:/Users/cm21sb/OneDrive - University of Leeds/Year 4/Sophie Blanch/code/tetracyclic_new/sandwiches/",
-            mol2_file="combined_sandwiches_test.mol2"
+            mol2_file="combined_sandwiches.mol2"
     )
         complexes.MakeGFN2xTBWithORCA6InputFiles(
             output_dir_name = "xTBInputFilesTest",
@@ -1650,5 +1451,3 @@ if __name__ == "__main__":
             Freq=False,
     )
 
-# end = perf_counter()
-# print(str(round(end - start, 3)) + " seconds to execute")
