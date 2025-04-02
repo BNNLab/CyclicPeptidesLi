@@ -1,7 +1,9 @@
+# Necessary imports 
 import os
 import numpy as np
 import copy
 
+# Classes and functions written by Samuel Mace - thank you!
 class Molecule:
     def __init__(self, identifier, formal_charge, atoms):
         self.identifier = identifier
@@ -227,12 +229,12 @@ class ProcessCompounds:
 if __name__ == "__main__":
         
         complexes = ProcessCompounds(
-            read_from_location="C:/Users/cm21sb/OneDrive - University of Leeds/Year 4/Sophie Blanch/code/tetracyclic_new/sandwiches/",
-            save_to_location="C:/Users/cm21sb/OneDrive - University of Leeds/Year 4/Sophie Blanch/code/tetracyclic_new/sandwiches/",
-            mol2_file="combined_sandwiches.mol2"
+            read_from_location="C:/Users/cm21sb/OneDrive - University of Leeds/Year 4/Sophie Blanch/code/tetracyclic_new/ligands/",
+            save_to_location="C:/Users/cm21sb/OneDrive - University of Leeds/Year 4/Sophie Blanch/code/tetracyclic_new/ligands/",
+            mol2_file="combined_ligands.mol2"
     )
         complexes.MakeGFN2xTBWithORCA6InputFiles(
-            output_dir_name = "xTBInputFilesTest2",
+            output_dir_name = "xTBInputFiles",
             multiplicity = 1,
             Freq=False,
     )
