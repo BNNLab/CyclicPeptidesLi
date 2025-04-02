@@ -1,3 +1,5 @@
+# Written by George Hodgin - Thank you!
+
 """Python script to extract mopac and xTB descriptors from their output files"""
 import argparse
 import os
