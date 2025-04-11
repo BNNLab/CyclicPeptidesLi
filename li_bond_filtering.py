@@ -1,7 +1,9 @@
+# Necessary imports
 import numpy as np
 import os
 import shutil
 from scipy.spatial import distance
+
 
 def read_xyz(filename):
     """ Reads an XYZ file and extracts atomic symbols and coordinates. """
@@ -16,10 +18,12 @@ def read_xyz(filename):
     except ValueError:
         print(f"Error: Invalid number of atoms in {filename}.")
         return [], []
-            
+        
+    # Initialise empty atoms and coordinates lists   
     atoms = []
     coords = []
 
+    # Extract atoms and coordinates from xyz file
     for line in lines[2:num_atoms+2]:  # Skip first two lines (header and comment)
         parts = line.split()
         atoms.append(parts[0])  # Atomic symbol
@@ -68,6 +72,7 @@ if __name__ == "__main__":
 
     xyz_dir = "//nobackup//cm21sb//sandwich_xyz//"
 
+    # Sort xyz files into new directories which contain complexes with different numbers of Li-O bonds
     output_dirs = {
         0: os.path.join(xyz_dir, "zero_bonds"),
         1: os.path.join(xyz_dir, "one_bond"),
@@ -77,10 +82,11 @@ if __name__ == "__main__":
         "more": os.path.join(xyz_dir, "more_than_four_bonds")
     }
 
+    # Create directories
     for path in output_dirs.values():
         os.makedirs(path, exist_ok=True)
 
-
+    # Loop through files, compute number of Li-O bonds and sort the files
     for file in os.listdir(xyz_dir):
         filepath = os.path.join(xyz_dir, file)
         code = str(file)[:4]
