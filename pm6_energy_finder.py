@@ -1,6 +1,8 @@
+# Necessary imports
 import os
 import pandas as pd
 
+# Define input directory
 input_directory = "/nobackup/cm21sb/pm6_energy/ligand_mopac/"
 # input_directory = "C://Users//cm21sb//OneDrive - University of Leeds//Year 4//Sophie Blanch//code//pm6_energy//"
 
