@@ -1,7 +1,10 @@
+# Written by Alister Goodfellow for running on AIRE- thank you!
+# Necessary imports
 import os
 import subprocess
 import pandas as pd
 
+# Define input directories
 inp_directory = 'inp_files'
 xyz_directory = 'tetracyclic_sandwiches_xyz_water'
 xyz_files = sorted([f for f in os.listdir(xyz_directory) if f.endswith(".xyz")])
@@ -13,6 +16,7 @@ if not xyz_files:
 
 df = pd.read_csv('charges.csv', index_col="Code")
 
+# Define outfile names
 for xyz in xyz_files:
     base_name = os.path.splitext(xyz)[0]
     out_file = os.path.join(xyz_directory, base_name + '.out')
@@ -22,6 +26,7 @@ for xyz in xyz_files:
         print(f"Skipping {base_name} because the output file already exists.")
         continue
 
+    # Extract total charges from list of overall charges
     charge = df.loc[base_name,"Charge"]
     print(f'{base_name} running')
     xyz_path = os.path.join(xyz_directory, xyz)
@@ -42,6 +47,7 @@ for xyz in xyz_files:
     except Exception as e:
         print(f"Error moving file: {e}")
 
+    # Remove temporary files
     tmpfiles=['charges', 'g98.out', 'hessian', 'vibspectrum', 'wbo', 'xtbopt.log', '.xtboptok', 'xtbopt.xyz', 'xtbrestart', 'xtbtopo.mol']
     for file in tmpfiles:
         try:
