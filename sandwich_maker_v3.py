@@ -1,3 +1,4 @@
+# Necessary import
 import subprocess
 import os
 import platform
@@ -31,20 +32,24 @@ from ase.constraints import FixBondLengths
 from ase.optimize import BFGS
 import logging
 
+# Import functions from Sam Mace's code
 from MoleculeHandler import Molecule, ReadWriteFiles
 
 if __name__ == "__main__":
 
+    # Process compounds
     readwrite = ReadWriteFiles()
     readwrite.ReadMol2File(
         mol2_file="C://Users//cm21sb//OneDrive - University of Leeds//Year 4//Sophie Blanch//code//tetracyclic_new//sandwiches//combined_ligands.mol2"
     )
 
+    # Produce third orientation of complexes
     for molecule in readwrite.MoleculeList:
         molecule2 = deepcopy(molecule)
         molecule.RotateMolecule(rotation_axis=np.array([0, 1, 0]), theta=np.pi)
         molecule2.TranslateMolecule(TranslationVector=np.array([0, 0, -6]))
         molecule.AddAtom(Label="Li1", AtomicSymbol="Li", SybylType="Li", Coordinates=np.array([0, 0, 3]), FormalCharge=1)
         molecule.AddMolecule(Molecule=molecule2)
-
+        
+    # Write all new complexes to one mol2 file
     readwrite.WriteMol2File(output_mol2_file_name="combined_sandwiches_v3.mol2")
