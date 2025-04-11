@@ -1,13 +1,17 @@
+# Neccessary imports
 import os
 import pandas as pd
 
+# Define input directory
 input_directory = "/nobackup/cm21sb/xtb_energy/sophie_ligands/sophie_ligands/jobs/"
 # input_directory = "C://Users//cm21sb//OneDrive - University of Leeds//Year 4//Sophie Blanch//code//xtb_energy//"
 
+# Establish empty lists for data
 codes = []
 free_energies = []
-# enthalpies = []
+enthalpies = []
 
+# Loop through subdirectories to find the total free energies of each .out file
 directory_list = os.listdir(input_directory)
 print(directory_list)
 
@@ -15,18 +19,12 @@ for dir in directory_list:
     if dir.startswith("job"):
         subdir_path = os.path.join(input_directory, dir)
 
-        print(subdir_path)
-
         if os.path.isdir(subdir_path):
             files = os.listdir(subdir_path)
-
-        print(files)
 
         for filename in files:
                 file_path = os.path.join(subdir_path, filename)
                 code = str(filename)[:4]
-
-                print(file_path)
 
                 if filename.endswith(".out"):
 
@@ -44,23 +42,9 @@ for dir in directory_list:
                                     codes.append(code)
                                     break
 
-                # print(f"{code}: {energy} ")
-                    # if "TOTAL ENTHALPY" in line:
-                    #      enthalpy_line = line.strip()
-                    #      enthalpy = enthalpy_line.split()[-3]
-                    #      enthalpies.append(enthalpy)
 
 # Make a data frame
-
 df = pd.DataFrame({"Code": codes, "Gibbs Free Energy / Eh": free_energies})
 
-print(df)
-# df.to_csv("ligands_gibbs_free_energy.txt", index=False)
+df.to_csv("ligands_gibbs_free_energy.txt", index=False)
                 
-        #    -------------------------------------------------
-        #   | TOTAL ENERGY             -128.023088620607 Eh   |
-        #   | TOTAL ENTHALPY           -127.325123683811 Eh   |
-        #   | TOTAL FREE ENERGY        -127.443798057052 Eh   |
-        #   | GRADIENT NORM               0.000320859649 Eh/α |
-        #   | HOMO-LUMO GAP               3.350250268934 eV   |
-        #    -------------------------------------------------
