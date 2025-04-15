@@ -71,7 +71,7 @@ if __name__ == "__main__":
             )
 
         # Write sandwich xtb input file
-        output_file = os.path.join(output_directory, f"{molecule_identifier}_xtb_input.inp")
+        output_file = os.path.join(output_directory, f"{molecule_identifier}.inp")
 
         try:
             with open(output_file, 'w') as f:
