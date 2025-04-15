@@ -1,19 +1,19 @@
-# For XTB files
+# Necessary imports
 import os
 import pandas as pd
 
-# === Paths ===
+# Define paths
 file_list_path = "/nobackup/cm21sb/xtb_energy/sophie/sophie/jobs/random_out_files.txt"
 source_dir = "/nobackup/cm21sb/xtb_energy/sophie/sophie/jobs/"
 
-# === Load filenames from the list ===
+# Load file names from list
 with open(file_list_path, "r") as f:
     target_files = [line.strip() for line in f if line.strip()]
 
-# === Data container ===
+# Establish empty list for frequencies
 data = []
 
-# === Process each file ===
+# Process files
 # Map filenames to full paths by walking all subdirectories
 all_files = {}
 for root, dirs, files in os.walk(source_dir):
@@ -47,7 +47,7 @@ for filename in target_files:
     else:
         print(f"File not found: {filename}")
 
-# === Write to CSV ===
+# Write csv
 df = pd.DataFrame(data)
 df.to_csv("/nobackup/cm21sb/xtb_negative_frequencies.csv", index=False)
 
