@@ -1,25 +1,26 @@
+# Necessary imports
 import os
 import pandas as pd
 import re
 
-# === Paths ===
+# Define paths
 file_list_path = "/nobackup/cm21sb/pm6_energy/random_aux_files.txt"
 source_dir = "/nobackup/cm21sb/pm6_energy/"
 
-# === Load filenames from the list ===
+# Load filenames from list
 with open(file_list_path, "r") as f:
     target_files = [line.strip() for line in f if line.strip()]
 
-# === Data container ===
+# Establish empty list for frequencies
 data = []
 
-# === Map filenames to full paths by walking subdirectories ===
+# Map filenames to full paths by walking subdirectories
 all_files = {}
 for root, dirs, files in os.walk(source_dir):
     for name in files:
         all_files[name] = os.path.join(root, name)
 
-# === Process each file ===
+# Prcoess each file name
 for filename in target_files:
     if filename in all_files:
         file_path = all_files[filename]
@@ -52,7 +53,7 @@ for filename in target_files:
         if neg_freqs:
             data.append({"File": filename, "Negative Frequencies": neg_freqs})
 
-# === Write to CSV ===
+# Write csv
 df = pd.DataFrame(data)
 df.to_csv("/nobackup/cm21sb/pm6_negative_frequencies.csv", index=False)
 
