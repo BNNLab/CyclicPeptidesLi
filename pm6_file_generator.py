@@ -6,7 +6,6 @@ import copy
 if __name__ == "__main__":
 
     # Define input and output directories
-    # input_directory = "C://Users//cm21sb//OneDrive - University of Leeds//Year 4//Sophie Blanch//code//tetracyclic_new//sandwiches//test_sandwich_mol2//xyz_files//four_bonds//"
     input_directory = "/nobackup/cm21sb/ligands_xyz_pm6/"
     output_directory = input_directory
 
